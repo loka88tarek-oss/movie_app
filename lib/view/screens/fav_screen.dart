@@ -41,7 +41,27 @@ class _FavScreenState extends State<FavScreen> {
       padding: const EdgeInsets.all(16),
       separatorBuilder: (context, index) => const SizedBox(height: 16),
       itemCount: movies.length,
-      itemBuilder: (context, index) => SearchMovieWidget(movie: movies[index]),
+      itemBuilder: (context, index) {
+        var movie = movies[index];
+        return Dismissible(
+          key: Key(movie.id.toString()),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {
+            moviesBox.delete(movie.id);
+            setState(() {});
+          },
+          background: Container(
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.only(right: 20),
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.delete, color: Colors.white, size: 30),
+          ),
+          child: SearchMovieWidget(movie: movie),
+        );
+      },
     );
   }
 

@@ -140,6 +140,8 @@ class _MovieDetailsState extends State<MovieDetails> {
             Padding(
               padding: const EdgeInsetsGeometry.symmetric(horizontal: 18.0),
               child: TabBar(
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
                 labelColor: Colors.white,
                 unselectedLabelColor: Colors.white,
                 indicatorColor: Color(0xff92929D),

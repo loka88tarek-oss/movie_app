@@ -143,6 +143,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
               ),
               TabBar(
+                isScrollable: true,
+                tabAlignment: TabAlignment.start,
                 unselectedLabelColor: Colors.white,
                 labelColor: Colors.white,
                 indicatorColor: Colors.white,
