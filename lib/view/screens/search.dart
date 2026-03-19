@@ -17,95 +17,103 @@ class Search extends StatelessWidget {
 
         backgroundColor: Color(0xff242A32),
       ),
-      body: Column(
-        children: [
-          TextFormField(
-            onChanged: (value) {
-              context.read<SearchCubit>().search(value);
-            },
-            decoration: InputDecoration(
-              suffixIcon: Icon(Icons.search_outlined),
-              fillColor: Color(0xff67686D),
-              filled: true,
-              hintText: "Search",
-              hintStyle: TextStyle(
-                color: const Color.fromARGB(255, 71, 71, 73),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextFormField(
+              onChanged: (value) {
+                context.read<SearchCubit>().search(value);
+              },
+              decoration: InputDecoration(
+                suffixIcon: Icon(Icons.search_outlined),
+                fillColor: Color(0xff67686D),
+                filled: true,
+                hintText: "Search",
+                hintStyle: TextStyle(
+                  color: const Color.fromARGB(255, 71, 71, 73),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
               ),
             ),
-          ),
 
-          BlocBuilder<SearchCubit, SearchState>(
-            builder: (context, state) {
-              print(state);
-              if (state is SearchLoading) {
-                return TweenAnimationBuilder(
-                  tween: Tween(begin: 0.0, end: 1.0),
-                  duration: const Duration(seconds: 2),
-                  builder: (context, value, child) {
-                    return Center(
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            value: value,
-                            backgroundColor: Color(0xFF2A2A45),
-                            valueColor: AlwaysStoppedAnimation(
-                              Color(0xFF7B8FFF),
-                            ),
-                            strokeWidth: 8,
-                          ),
-                          Text(
-                            '${(value * 100).toInt()}%',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                );
-              }
-              if (state is SearchSucess) {
-                if (state.searchResponseModel.results.isEmpty) {
-                  return Expanded(child: _notFoundResult());
-                }
-                return Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: ListView.builder(
-                      itemCount: state.searchResponseModel.results.length,
-                      itemBuilder: (context, index) {
-                        var searchmovie =
-                            state.searchResponseModel.results[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MovieDetails(movie: searchmovie),
+            BlocBuilder<SearchCubit, SearchState>(
+              builder: (context, state) {
+                print(state);
+                if (state is SearchLoading) {
+                  return TweenAnimationBuilder(
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    duration: const Duration(seconds: 2),
+                    builder: (context, value, child) {
+                      return Center(
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            CircularProgressIndicator(
+                              value: value,
+                              backgroundColor: Color(0xFF2A2A45),
+                              valueColor: AlwaysStoppedAnimation(
+                                Color(0xFF7B8FFF),
                               ),
-                            );
-                          },
-                          child: SearchMovieWidget(movie: searchmovie),
-                        );
-                      },
+                              strokeWidth: 8,
+                            ),
+                            Text(
+                              '${(value * 100).toInt()}%',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                }
+                if (state is SearchSucess) {
+                  if (state.searchResponseModel.results.isEmpty) {
+                    return Expanded(child: _notFoundResult());
+                  }
+                  return Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: ListView.builder(
+                        itemCount: state.searchResponseModel.results.length,
+                        itemBuilder: (context, index) {
+                          var searchmovie =
+                              state.searchResponseModel.results[index];
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDetails(movie: searchmovie),
+                                ),
+                              );
+                            },
+                            child: Column(
+                              children: [
+                                SearchMovieWidget(movie: searchmovie),
+                                SizedBox(height: 12),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                );
-              }
-              return Expanded(child: _notFoundResult());
-            },
-          ),
-        ],
+                  );
+                }
+                return Expanded(child: _notFoundResult());
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

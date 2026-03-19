@@ -36,6 +36,7 @@ class _MovieDetailsState extends State<MovieDetails> {
             fontWeight: FontWeight.w600,
           ),
         ),
+        iconTheme: IconThemeData(color: Colors.white),
         actions: [
           GestureDetector(
             onTap: () {
